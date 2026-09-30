@@ -15,5 +15,30 @@ services:
       timeout: 3s
       retries: 10
 
+  api:
+    build: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: "${ASPNETCORE_ENVIRONMENT:-Production}"
+      ConnectionStrings__Wallet: "Host=db;Port=5432;Database=${POSTGRES_DB:-wallet};Username=${POSTGRES_USER:-wallet};Password=${POSTGRES_PASSWORD:-wallet};Timeout=5"
+      Issuer__Did: "${Issuer__Did:-did:example:futbol}"
+      Issuer__KeyId: "${Issuer__KeyId:-key-1}"
+      Issuer__CredentialBaseUri: "${Issuer__CredentialBaseUri:-https://credenciales.futbol.com.ar/}"
+      # Sin valor por defecto: la clave nunca se versiona (copiar .env.example a .env).
+      Issuer__SigningKey: "${Issuer__SigningKey:?Falta Issuer__SigningKey: copiá .env.example a .env}"
+      Issuer__SimulateFailure: "${Issuer__SimulateFailure:-false}"
+      Tenant__Id: "${Tenant__Id:-club-futbol}"
+    ports:
+      - "${API_PORT:-5080}:8080"
+
+  web:
+    build: ./frontend
+    depends_on:
+      - api
+    ports:
+      - "${WEB_PORT:-4200}:80"
+
 volumes:
   pgdata:
