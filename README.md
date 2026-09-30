@@ -38,7 +38,7 @@ La arquitectura separa, a nivel de servicio, el rol de negocio (**Tenant**, el c
 
 ### Local
 
-**Requisitos:** .NET SDK 10, Node 22 (por ejemplo con [nvm-windows](https://github.com/coreybutler/nvm-windows)), Docker (para PostgreSQL y los tests de integración).
+**Requisitos:** .NET SDK 10, Node 24 LTS (por ejemplo con [nvm-windows](https://github.com/coreybutler/nvm-windows)), Docker (para PostgreSQL y los tests de integración).
 
 *Pendiente.*
 

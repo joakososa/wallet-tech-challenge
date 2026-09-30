@@ -1,6 +1,6 @@
 # ADR 008 — Repositorio y ejecución
 
-- **Estado:** Aceptado
+- **Estado:** Aceptado. La versión de Node (punto 2 de la decisión) fue reemplazada por el [ADR 010](010-version-de-node.md).
 - **Fecha:** 2026-09-29
 
 ## Contexto

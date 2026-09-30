@@ -41,6 +41,7 @@ Prueba técnica: sistema que emite (UC01) y lista (UC02) credenciales verificabl
 | 007 | Validación y formato de errores |
 | 008 | Repositorio y ejecución |
 | 009 | Frontend |
+| 010 | Versión de Node (reemplaza al ADR 008 en ese punto) |
 
 ## Estado actual
 Plan aprobado. Pasos:
