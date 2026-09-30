@@ -9,7 +9,7 @@ public class CredentialTests
     private static readonly Guid _vcGuid = Guid.Parse("8f14e45f-ceea-467e-9de1-93f5a5f4bfae");
 
     [Fact]
-    public void FromIssued_ArmaElSnapshotConLosDatosDelSocioYDeLaVc()
+    public void FromIssued_ConUnaVcYUnSocio_ArmaElSnapshotConSusDatos()
     {
         var socio = CrearSocio();
         var vc = CrearVc();
@@ -34,7 +34,7 @@ public class CredentialTests
     }
 
     [Fact]
-    public void FromIssued_GuardaElDocumentoTalComoLoSerializaElIssuer()
+    public void FromIssued_ConUnaVc_GuardaElDocumentoTalComoLoSerializaElIssuer()
     {
         var vc = CrearVc();
 

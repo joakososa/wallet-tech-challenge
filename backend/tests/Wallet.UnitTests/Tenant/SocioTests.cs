@@ -7,7 +7,7 @@ public class SocioTests
     private static readonly DateTimeOffset _createdAt = new(2026, 8, 9, 14, 32, 10, TimeSpan.Zero);
 
     [Fact]
-    public void Update_CambiaLosDatosMutablesYLaFechaDeActualizacion()
+    public void Update_ConDatosNuevos_CambiaLosDatosMutablesYLaFechaDeActualizacion()
     {
         var socio = CrearSocio();
         var now = _createdAt.AddDays(3);
@@ -22,7 +22,7 @@ public class SocioTests
     }
 
     [Fact]
-    public void Update_NoTocaLaIdentidadDelSocio()
+    public void Update_ConDatosNuevos_NoTocaLaIdentidadDelSocio()
     {
         var socio = CrearSocio();
         var id = socio.Id;
