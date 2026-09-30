@@ -49,7 +49,7 @@ Prueba técnica: sistema que emite (UC01) y lista (UC02) credenciales verificabl
 Plan aprobado. Pasos:
 - [x] 0. Docs iniciales (README, CLAUDE.md, ADRs, esqueleto de arquitectura, enunciado)
 - [x] 1. Bootstrap del backend
-- [ ] 2. Issuer + tests
+- [x] 2. Issuer + tests
 - [ ] 3. Tenant + tests
 - [ ] 4. Infrastructure
 - [ ] 5. Api + tests de integración

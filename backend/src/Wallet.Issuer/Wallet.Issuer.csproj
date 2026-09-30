@@ -3,6 +3,11 @@
   <!-- El Issuer no referencia a ningún otro proyecto de la solución (ADR 001). -->
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+  </ItemGroup>
+
+  <ItemGroup>
     <InternalsVisibleTo Include="Wallet.UnitTests" />
   </ItemGroup>
 
