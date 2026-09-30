@@ -48,6 +48,7 @@ Prueba técnica: sistema que emite (UC01) y lista (UC02) credenciales verificabl
 | 014 | `CredentialJsonBuilder`: escribe el JSON canónico (sin `proof`) y el documento (`WithProof`); reemplaza al ADR 013 en el punto 2 |
 | 015 | Diseño del Tenant: entidades, puertos, casos de uso, reintento por carrera de DNI, `Dni.TryNormalize`, `TenantOptions`, tests con fakes |
 | 016 | Contrato HTTP (endpoints, respuestas, errores) y cierre de las decisiones abiertas del Tenant (DID, `AddAsync`, VC en la respuesta) |
+| 017 | Infrastructure y Api: migraciones al arrancar, serialización de fechas y VC, validación, errores, falla simulada |
 
 ## Estado actual
 Plan aprobado. Pasos:
