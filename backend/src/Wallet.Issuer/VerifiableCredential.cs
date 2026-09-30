@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Wallet.Issuer;
 
 public sealed record VerifiableCredential(
@@ -21,5 +23,16 @@ public sealed record VerifiableCredential(
             payload.CredentialSubject,
             proof)
     {
+    }
+
+    /// <summary>
+    /// Documento completo listo para persistir y devolver: es el JSON que se firmó más <c>proof</c> (ADR 013).
+    /// </summary>
+    public string ToJson()
+    {
+        var payload = new CredentialPayload(
+            Id, Type, Issuer, ValidFrom, ValidUntil, CredentialStatus, CredentialSubject);
+
+        return Encoding.UTF8.GetString(new CredentialJsonBuilder(payload).WithProof(Proof).Build());
     }
 }
