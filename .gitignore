@@ -1,0 +1,24 @@
+# Secretos / entorno
+.env
+*.env.local
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+TestResults/
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+coverage/
+
+# IDE / SO
+.idea/
+.vscode/*
+!.vscode/extensions.json
+Thumbs.db
+.DS_Store
