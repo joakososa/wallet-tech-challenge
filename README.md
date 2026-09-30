@@ -51,7 +51,7 @@ Toda la configuración se maneja por variables de entorno. Ver `.env.example` (*
 | `ConnectionStrings__Wallet` | Cadena de conexión a PostgreSQL |
 | `Issuer__Did` | DID del emisor (`did:example:futbol`) |
 | `Issuer__SigningKey` | Secreto HMAC (mínimo 32 bytes). **Nunca versionar.** |
-| `Issuer__VerificationMethod` | Identificador de la clave vigente (`did:example:futbol#key-1`) |
+| `Issuer__KeyId` | Identificador de la clave vigente (`key-1`). El Issuer arma `verificationMethod` = `{Did}#{KeyId}` |
 | `Issuer__CredentialBaseUri` | Base del `id` de la credencial (`https://credenciales.futbol.com.ar/`) |
 | `Tenant__Id` | Identificador del tenant (`club-futbol`) |
 | `Issuer__SimulateFailure` | Solo en Development: fuerza una falla de firma para demostrar el manejo de errores |
