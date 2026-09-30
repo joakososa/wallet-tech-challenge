@@ -36,7 +36,8 @@ Requisito: Docker con Compose.
 
 ```bash
 cp .env.example .env
-# Editar .env y definir Issuer__SigningKey con un secreto propio de al menos 32 bytes.
+# Editar .env y definir Issuer__SigningKey con un secreto propio de al menos 32 bytes
+# (por ejemplo, generado con: openssl rand -base64 48). Sin él, docker compose no arranca.
 docker compose up --build
 ```
 
@@ -128,7 +129,9 @@ npm test -- --watch=false
 
 Las decisiones relevantes están documentadas en [`docs/adr/`](docs/adr/) y el diseño en [`docs/architecture.md`](docs/architecture.md).
 
-Quedan fuera, por tiempo y documentado en el [ADR 016](docs/adr/016-contrato-http-y-decisiones-abiertas.md): upload de foto (la foto es una URL), *idempotency key*, *circuit breaker* para un Issuer remoto y paginación. Tampoco se implementan la verificación, la revocación ni la autenticación (fuera del alcance del enunciado).
+Quedan fuera, por tiempo y documentado en el [ADR 016](docs/adr/016-contrato-http-y-decisiones-abiertas.md): upload de foto (la foto es una URL), *idempotency key*, *circuit breaker* para un Issuer remoto y paginación. **Limitación conocida:** el encoder JSON (`UnsafeRelaxedJsonEscaping`) no escapa tildes ni la ñ, pero sí escapa emojis y algunos espacios especiales (por ejemplo el NBSP). Lo firmado, lo persistido y lo devuelto usan el mismo encoder, así que el documento es consistente; solo se aparta de la letra del punto 5 de la canonicalización del enunciado para esos caracteres.
+
+Tampoco se implementan la verificación, la revocación ni la autenticación (fuera del alcance del enunciado).
 
 ## Documentación
 
