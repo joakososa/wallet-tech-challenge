@@ -54,7 +54,7 @@ Toda la configuración se maneja por variables de entorno. Ver `.env.example` (*
 | `Issuer__KeyId` | Identificador de la clave vigente (`key-1`). El Issuer arma `verificationMethod` = `{Did}#{KeyId}` |
 | `Issuer__CredentialBaseUri` | Base del `id` de la credencial (`https://credenciales.futbol.com.ar/`) |
 | `Tenant__Id` | Identificador del tenant (`club-futbol`) |
-| `Issuer__SimulateFailure` | Solo en Development: fuerza una falla de firma para demostrar el manejo de errores |
+| `Issuer__SimulateFailure` | Solo en Development: la API envuelve al Issuer con un decorator que falla, para demostrar el manejo de errores (ADR 012) |
 
 ## Tests
 

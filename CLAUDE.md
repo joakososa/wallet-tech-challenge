@@ -22,7 +22,7 @@ Prueba técnica: sistema que emite (UC01) y lista (UC02) credenciales verificabl
 - PostgreSQL: `socios` (estado actual) y `credentials` (snapshot inmutable + VC en una columna `json`).
 
 ## Invariantes que no se pueden romper
-- **Canonicalización** (ADR 004): `Utf8JsonWriter` campo por campo, en orden alfabético, compacto, sin escapar lo no ASCII. El test golden contra el ejemplo del enunciado tiene que pasar siempre.
+- **Canonicalización** (ADR 004 y 012): `Utf8JsonWriter`, primer nivel en orden fijo y claves del `credentialSubject` ordenadas con `StringComparer.Ordinal`, compacto, sin escapar lo no ASCII. El test golden contra el ejemplo del enunciado tiene que pasar siempre.
 - **Fechas** (ADR 005): se truncan a segundos al generarlas; formato `yyyy-MM-ddTHH:mm:ssZ`. Lo firmado = lo persistido = lo devuelto.
 - **Si la firma falla, no se persiste nada** (UC01 5a). La firma ocurre fuera de la transacción; la transacción es corta (ADR 003).
 - **El documento VC persistido no se muta.** El estado actual vive en una columna aparte (ADR 002).
@@ -43,6 +43,7 @@ Prueba técnica: sistema que emite (UC01) y lista (UC02) credenciales verificabl
 | 009 | Frontend |
 | 010 | Versión de Node (reemplaza al ADR 008 en ese punto) |
 | 011 | `verificationMethod` = `{Did}#{KeyId}` (reemplaza al ADR 004 en ese punto) |
+| 012 | Contrato del Issuer: claims genéricos, `credentialStatus` enum, `IssuerSigningException` y decorator de simulación de falla (reemplaza al ADR 004 en la canonicalización del subject) |
 
 ## Estado actual
 Plan aprobado. Pasos:

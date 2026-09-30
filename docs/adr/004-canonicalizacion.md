@@ -1,6 +1,6 @@
 # ADR 004 — Canonicalización del JSON a firmar
 
-- **Estado:** Aceptado. La configuración de `proof.verificationMethod` fue reemplazada por el [ADR 011](011-verification-method.md).
+- **Estado:** Aceptado. La configuración de `proof.verificationMethod` fue reemplazada por el [ADR 011](011-verification-method.md). La escritura de `credentialSubject` campo por campo fue reemplazada por el [ADR 012](012-contrato-del-issuer.md).
 - **Fecha:** 2026-09-29
 
 ## Contexto
