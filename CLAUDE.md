@@ -47,37 +47,26 @@ Prueba técnica: sistema que emite (UC01) y lista (UC02) credenciales verificabl
 | 013 | Serialización del documento VC (`VerifiableCredential.ToJson()`, `proof` al final; el punto 2 fue reemplazado por el ADR 014) |
 | 014 | `CredentialJsonBuilder`: escribe el JSON canónico (sin `proof`) y el documento (`WithProof`); reemplaza al ADR 013 en el punto 2 |
 | 015 | Diseño del Tenant: entidades, puertos, casos de uso, reintento por carrera de DNI, `Dni.TryNormalize`, `TenantOptions`, tests con fakes |
+| 016 | Contrato HTTP (endpoints, respuestas, errores) y cierre de las decisiones abiertas del Tenant (DID, `AddAsync`, VC en la respuesta) |
+| 017 | Infrastructure y Api: migraciones al arrancar, serialización de fechas y VC, validación, errores, falla simulada |
 
 ## Estado actual
-Plan aprobado. Pasos:
-- [x] 0. Docs iniciales (README, CLAUDE.md, ADRs, esqueleto de arquitectura, enunciado)
+Pasos 0 a 8 implementados en la rama `wip/overnight` (trabajo nocturno autorizado sin revisión intermedia; **pendiente de revisión del usuario**):
+- [x] 0. Docs iniciales
 - [x] 1. Bootstrap del backend
 - [x] 2. Issuer + tests
-- [ ] 3. Tenant + tests (en curso, ver "Paso 3: qué falta")
-- [ ] 4. Infrastructure
-- [ ] 5. Api + tests de integración
-- [ ] 6. Frontend
-- [ ] 7. Docker
-- [ ] 8. Docs finales (extras si sobra tiempo: upload de foto, idempotency key)
+- [x] 3. Tenant + tests (`IssueCredentialUseCase`, `ListCredentialsUseCase`, `AddTenant`; ADR 015 completo, con el reintento por carrera de DNI)
+- [x] 4. Infrastructure (EF Core, secuencia, migración `InitialCreate`)
+- [x] 5. Api + tests de integración (Testcontainers)
+- [x] 6. Frontend Angular (alta, resultado, listado) con tests
+- [x] 7. Docker (`docker compose up --build` levanta db, api y web)
+- [x] 8. Docs finales (README, architecture.md con diagramas, ADR 016 y 017)
 
-### Paso 3: qué falta
-**Hecho y commiteado** (84 tests en verde):
-- ADR 013, 014 y 015 (aceptados).
-- Issuer: `VerifiableCredential.ToJson()` y `CredentialJsonBuilder`.
-- Tenant: `Socio`, `Credential` (con `FromIssued`), `Categoria` + `CategoriaText`, `ISocioRepository`, `ICredentialRepository`, `DuplicateDniException`, `CredentialFilter`, `CredentialSummary`. Tests de `Categoria`, `Socio` y `Credential`.
+Verificado a mano: alta, socio existente, listado, estado vacío y falla de firma simulada, en el navegador y por Docker.
 
-**Pendiente, en este orden** (el diseño completo está en el ADR 015; se implementó una primera versión del punto 1 y se descartó sin commitear, hay que rehacerla):
-1. **`IssueCredentialUseCase`** + `IssueCredentialCommand` (nombre, apellido, DNI, categoría, foto) + `IssueCredentialResult` (VC, `NumeroSocio` con formato, `IsNewSocio`) + `Dni.TryNormalize` + `NumeroSocio.Format` (`D6`, culture invariant) + `TenantOptions` (`Id`, por defecto `club-futbol`, lo necesita el caso de uso). Constructor: `ISocioRepository`, `ICredentialRepository`, `ICredentialIssuer`, `TimeProvider`, `TenantOptions`.
-   - Flujo: normalizar DNI (si es inválido lanza `ArgumentException`; la API valida antes) → buscar socio → si no existe, `NextNumeroSocioAsync` y DID nuevo; si existe, reutilizar DID y número → claims (`id`, `nombre`, `apellido`, `dni`, `numeroSocio`, `categoria`, `foto`) y `types = ["VerifiableCredential","SocioCredential"]` → firmar → **recién después** `Socio.Update` (si es existente) o `new Socio` → `Credential.FromIssued` → `AddAsync`.
-   - Ante `DuplicateDniException` se repite todo el flujo una sola vez (hay que volver a firmar con los datos del ganador); si falla de nuevo, se propaga.
-   - Tests con fakes escritos a mano (sin librería de mocking) en `tests/Wallet.UnitTests/Tenant/Fakes`: `InMemoryStore` (implementa los dos puertos, con contador de llamadas y un gancho `OnAdd` para simular la carrera), `FakeCredentialIssuer` (arma una VC con lo recibido y tiene un gancho `OnIssue` para lanzar `IssuerSigningException`) y `FixedTimeProvider`. Casos: socio nuevo, socio existente, DNI con puntos, DNI inválido, falla de firma (con y sin socio existente: no se persiste ni se modifica nada), carrera de DNI con reintento, carrera repetida, snapshot igual a la VC, propagación del `CancellationToken`.
-2. **`ListCredentialsUseCase`** + su query: filtra por tenant y, opcionalmente, por DNI (normalizado) y número de socio (parseo del string a `long`); el orden y el estado vacío lo resuelve el repositorio. Tests con el `InMemoryStore` (que también implementa `ListAsync`).
-3. **`AddTenant()`** (extensión de DI; reutiliza el `TimeProvider` de `AddIssuer()`) y su test, al estilo de `IssuerServiceCollectionExtensions`.
+**Fuera de alcance (ADR 016):** upload de foto, idempotency key, circuit breaker, paginación.
 
-**Consultas abiertas para el usuario** (no bloquean, decidir al retomar):
-- El DID del socio nuevo usa el mismo `Guid` que su `Id` (`did:example:{Id}`). Es una simplificación; si se prefieren Guids distintos, es un cambio de una línea.
-- `ICredentialRepository.AddAsync(socio, credential)` no dice si el socio es nuevo: Infrastructure lo resuelve con el change tracker de EF (el socio devuelto por `FindByDniAsync` está tracked y se actualiza; uno nuevo se inserta). Está documentado en la interfaz. Si en el paso 4 resulta incómodo, se cambia con un ADR nuevo.
-- Cómo se inserta el documento VC (`ToJson()`) dentro del sobre de la respuesta HTTP se decide en el paso 5.
+**Para el usuario:** leer el código del Tenant (`backend/src/Wallet.Tenant`) y los ADR 016 y 017. Los archivos `docs/walkthrough.md` y `docs/aprendizaje.md` son notas personales y están en el `.gitignore`.
 
 ## Convenciones de tests
 - Nombres `Metodo_Escenario_Resultado` en español (por ejemplo `HandleAsync_SiFallaLaFirma_PropagaLaExcepcionYNoPersisteNada`). Todo test lleva las tres partes.

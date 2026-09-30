@@ -1,0 +1,28 @@
+@if (result(); as r) {
+  <section class="card result">
+    <p class="banner banner-ok" role="status">Credencial emitida correctamente.</p>
+
+    <p class="muted">Número de socio</p>
+    <p class="numero">{{ r.numeroSocio }}</p>
+
+    <dl class="summary">
+      <dt>Válida desde</dt>
+      <dd>{{ r.validFrom | date: 'dd/MM/yyyy' : 'UTC' }}</dd>
+      <dt>Válida hasta</dt>
+      <dd>{{ r.validUntil | date: 'dd/MM/yyyy' : 'UTC' }}</dd>
+      <dt>Socio</dt>
+      <dd>
+        @if (r.isNewSocio) {
+          Socio nuevo: se le asignó el número {{ r.numeroSocio }}.
+        } @else {
+          Socio existente: se reutilizó su número y se actualizaron sus datos.
+        }
+      </dd>
+    </dl>
+
+    <div class="actions">
+      <a class="btn btn-primary" routerLink="/">Ver listado</a>
+      <a class="btn" routerLink="/alta">Emitir otra</a>
+    </div>
+  </section>
+}
