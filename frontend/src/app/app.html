@@ -1,0 +1,11 @@
+<header class="topbar">
+  <a class="brand" routerLink="/">Club de Fútbol de Córdoba <span>· Credenciales</span></a>
+  <nav>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Listado</a>
+    <a routerLink="/alta" routerLinkActive="active">Nueva credencial</a>
+  </nav>
+</header>
+
+<main class="container">
+  <router-outlet />
+</main>
