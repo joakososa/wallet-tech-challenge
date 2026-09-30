@@ -35,3 +35,7 @@ dotnet_naming_style.underscore_camel.capitalization = camel_case
 
 # ConfigureAwait no aplica en ASP.NET Core
 dotnet_diagnostic.CA2007.severity = none
+
+[tests/**.cs]
+# Los nombres de test usan Metodo_Escenario_Resultado
+dotnet_diagnostic.CA1707.severity = none
