@@ -39,3 +39,7 @@ dotnet_diagnostic.CA2007.severity = none
 [tests/**.cs]
 # Los nombres de test usan Metodo_Escenario_Resultado
 dotnet_diagnostic.CA1707.severity = none
+
+[src/Wallet.Infrastructure/Migrations/*.cs]
+# Código generado por dotnet ef: no se le aplican los analizadores.
+generated_code = true
