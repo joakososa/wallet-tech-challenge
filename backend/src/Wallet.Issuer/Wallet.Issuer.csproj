@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- El Issuer no referencia a ningún otro proyecto de la solución (ADR 001). -->
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Wallet.UnitTests" />
+  </ItemGroup>
+
+</Project>

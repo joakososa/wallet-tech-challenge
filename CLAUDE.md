@@ -46,7 +46,7 @@ Prueba técnica: sistema que emite (UC01) y lista (UC02) credenciales verificabl
 ## Estado actual
 Plan aprobado. Pasos:
 - [x] 0. Docs iniciales (README, CLAUDE.md, ADRs, esqueleto de arquitectura, enunciado)
-- [ ] 1. Bootstrap del backend
+- [x] 1. Bootstrap del backend
 - [ ] 2. Issuer + tests
 - [ ] 3. Tenant + tests
 - [ ] 4. Infrastructure
@@ -56,4 +56,12 @@ Plan aprobado. Pasos:
 - [ ] 8. Docs finales (extras si sobra tiempo: upload de foto, idempotency key)
 
 ## Comandos
-*Se completan a medida que se crean los proyectos.*
+Desde `backend/`:
+- `dotnet build`: compila la solución (`ECredWallet.slnx`). Los warnings son errores.
+- `dotnet test`: corre todos los tests.
+- `dotnet run --project src/Wallet.Api`: levanta la API en `http://localhost:5080`.
+
+Convenciones del backend:
+- Configuración común en `Directory.Build.props` (net10.0, nullable, analizadores).
+- Versiones de NuGet centralizadas en `Directory.Packages.props`: los `.csproj` usan `<PackageReference Include="X" />` sin versión.
+- Estilo en `.editorconfig` (file-scoped namespaces, `_camelCase` para campos privados, llaves obligatorias).

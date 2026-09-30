@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wallet.Issuer\Wallet.Issuer.csproj" />
+  </ItemGroup>
+
+</Project>
